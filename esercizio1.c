@@ -9,14 +9,27 @@ struct valuta {
     int giorno, mese, anno;
 };
 
-float compare(const void *arg1, const void *arg2) {
-    const struct valuta *x = arg1;
-    const struct valuta *y = arg2;
-    printf("x->tasso = %f, y->tasso = %f\n", x->tasso, y->tasso);
+int compare(const void *arg1, const void *arg2) {
+    const struct valuta *x = (const struct valuta *) arg1;
+    const struct valuta *y = (const struct valuta *) arg2;
 
-    //return y->tasso - x->tasso;
-    if (x->tasso > y->tasso) return y->tasso;
-    else return x->tasso;
+    return (x->tasso > y->tasso);
+}
+
+int compare2(const void *arg1, const void *arg2) {
+    const struct valuta *x = (const struct valuta *) arg1;
+    const struct valuta *y = (const struct valuta *) arg2;
+
+    if (x->anno > y->anno) return 1;
+    else if (x->anno == y->anno){
+        if (x->mese > y->mese) return 1;
+        else if (x->mese == y->mese){
+            if (x->giorno > y->giorno) return 1;
+            else return 0;
+        }
+        else return 0;
+    }
+    else return 0;
 }
 
 int main (void){
@@ -141,11 +154,13 @@ int main (void){
                 break;
             
             case 4:
-                qsort(array, array_dim, sizeof(array), compare);
+                qsort(array, array_dim, sizeof(*array), compare);
+                printf("Sort effettuato!!\n");
                 break;
             
             case 5:
-                qsort(array, array_dim, sizeof(array), compare);
+                qsort(array, array_dim, sizeof(*array), compare2);
+                printf("Sort effettuato!!\n");
                 break;
             
             case 6:
